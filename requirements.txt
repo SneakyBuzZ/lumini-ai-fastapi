@@ -1,3 +1,14 @@
-fastpi
-pydantic 
+fastapi
+pydantic
 uvicorn
+black
+ruff
+python-dotenv
+httpx
+transformers
+torch
+python-jose
+rich
+sqlalchemy[asyncio]
+asyncpg
+cuid
