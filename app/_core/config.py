@@ -1,9 +1,6 @@
 import os
-
 from dotenv import load_dotenv  # type: ignore
-
 load_dotenv()
-
 
 class Settings:
     PORT: int = int(os.getenv("PORT"))
@@ -14,6 +11,7 @@ class Settings:
     DATABASE_URL: str = os.getenv("DATABASE_URL")
     OLLAMA_URL: str = os.getenv("OLLAMA_URL")
     CLIENT_URL: str = os.getenv("CLIENT_URL")
+    QDRANT_URL: str = os.getenv("QDRANT_URL")
 
 
 settings = Settings()

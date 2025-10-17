@@ -9,3 +9,7 @@ class LabFileController:
     async def get_all(self, lab_id: str, db : AsyncSession):
         lab_file_service = LabFileService(db)
         return await lab_file_service.get_all(lab_id)
+    
+    async def ask(self, lab_id: str, query: str, db : AsyncSession):
+        lab_file_service = LabFileService(db)
+        return await lab_file_service.ask(lab_id, query)

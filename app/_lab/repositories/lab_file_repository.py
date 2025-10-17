@@ -22,9 +22,16 @@ class LabFileRepository:
         if not data_list:
             return
         try:
-            stmt = insert(lab_files)
-            await self.db.execute(stmt, data_list)
+            stmt = (
+                insert(lab_files)
+                .returning(lab_files.c.id, lab_files.c.name, lab_files.c.path, lab_files.c.summary)
+            )
+
+            result = await self.db.execute(stmt, data_list)
             await self.db.commit()
+
+            inserted_files = [dict(row._mapping) for row in result.all()]
+            return inserted_files
         except SQLAlchemyError as e:
             await self.db.rollback()
             raise AppError(500, f"Failed to save lab files: {e}")
@@ -35,7 +42,16 @@ class LabFileRepository:
             result = await self.db.execute(query)
             rows = result.all()
             files = [dict(row._mapping) for row in rows]
-            logger.info(f"Fetched {len(files)} files for lab_id: {lab_id}")
             return files or []
         except SQLAlchemyError as e:
             logger.error(f"Error fetching lab files for lab_id {lab_id}: {e}")
+
+    async def get_lab_files(self, ids: list[str]):
+        query = select(lab_files).where(lab_files.c.id.in_(ids))
+        try:
+            result = await self.db.execute(query)
+            rows = result.all()
+            files = [dict(row._mapping) for row in rows]
+            return files or []
+        except SQLAlchemyError as e:
+            logger.error(f"Error fetching lab files for ids {ids}: {e}")
