@@ -51,21 +51,11 @@ def build_prompt(query: str, related_files: list[dict], max_chars: int = 12000) 
         - Do not include generic phrases like "Here's the answer" or "The relevant code is...".
         - If no relevant files exist, clearly state that.
 
-        ## Example Markdown Output
-        # Response Title
-        Here is a clear, structured explanation based on the code analysis.
-
-        ## Key Points
-        - Point 1: Explanation.
-        - Point 2: Explanation.
-
-        ### Code Snippet from (filename)
-            // Relevant code snippet not just full block of code, after code block proper explanation should follow.
-
-        ## Summary
-        In conclusion, this analysis highlights important aspects of the codebase, guiding potential improvements and understanding.
-
-        ---
+        ## Markdown Heading Hierarchy
+        - Use `#` first heading that introduces the response.
+        - Use `##` for key sections within the response.
+        - Use `###` for sub-sections or code snippets within sections.
+        - Use ``` language <code> ``` for code blocks.
 
         **Ensure responses are clear, concise, and follow this structure to provide professional, readable documentation.**
     """

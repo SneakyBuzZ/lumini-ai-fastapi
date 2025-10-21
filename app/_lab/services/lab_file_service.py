@@ -38,9 +38,7 @@ class LabFileService:
         similar_files = await get_similar_files(query_embedding, lab_id)
         ids = [file['file_id'] for file in similar_files]
         similar_files = await self.repository.get_lab_files(ids)
-        answer = await ask_query(query, similar_files)
-        answer = answer.replace("\n\n", "\n").replace("\t\t", "\t")
-        return answer
+        return await ask_query(query, similar_files)
 
     def get_lab_files_data(self, files: list[dict], user_id: str, lab_id: str):
         lab_files_data = []

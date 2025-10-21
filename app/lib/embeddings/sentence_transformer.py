@@ -1,5 +1,6 @@
 from sentence_transformers import SentenceTransformer
 from app._core.responses import AppError
+from uuid import uuid4
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
@@ -17,7 +18,7 @@ def generate_files_embeddings(files : list[dict], lab_id : str) -> list[dict]:
         file['embedding'] = generate_file_embeddings(file['summary'])
     summary_embeddings = [
         {
-            "id" : idx,
+            "id" : str(uuid4()),
             "vector" : file['embedding'],
             "payload" : {
                 "lab_id": lab_id,
@@ -25,6 +26,6 @@ def generate_files_embeddings(files : list[dict], lab_id : str) -> list[dict]:
                 "file_name" : file['name'],
             }
         }
-        for idx, file in enumerate(files)
+        for file in files
     ]
     return summary_embeddings

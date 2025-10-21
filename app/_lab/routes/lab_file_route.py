@@ -38,11 +38,10 @@ class LabFileRouter:
             lab_files = await self.controller.get_all(lab_id, db)
             return DataResponse(status=200, message="Lab files fetched successfully", payload=lab_files)
         
-        @self.router.get("/ask/{lab_id}")
+        @self.router.post("/ask/{lab_id}")
         async def ask_endpoint(
             lab_id: str,
             request: AskRequest,
             db: AsyncSession = Depends(get_db)
         ):
-            answer = await self.controller.ask(lab_id, request.query, db)
-            return DataResponse(status=200, message="Similar files fetched successfully", payload=answer)
+            return await self.controller.ask(lab_id, request.query, db)

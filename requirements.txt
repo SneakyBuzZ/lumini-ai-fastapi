@@ -12,5 +12,6 @@ rich
 sqlalchemy[asyncio]
 asyncpg
 cuid
+uuid
 sentence-transformers
 qdrant-client

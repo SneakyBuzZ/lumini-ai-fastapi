@@ -2,7 +2,7 @@ import httpx
 from typing import Optional
 from app._core.config import settings
 
-CODELLAMA_URL = settings.OLLAMA_URL
+AI_URL = "http://localhost:11434/api/generate"
 MODEL_NAME = "llama3.1:latest"
 
 SUMMARY_ROLE = (
@@ -30,7 +30,7 @@ async def summarize_text(text: str, client: Optional[httpx.AsyncClient] = None) 
             "stream": False,
         }
 
-        response = await client.post(CODELLAMA_URL, json=payload, headers={"Content-Type": "application/json"})
+        response = await client.post(AI_URL, json=payload, headers={"Content-Type": "application/json"})
         response.raise_for_status()
 
         data = response.json()
