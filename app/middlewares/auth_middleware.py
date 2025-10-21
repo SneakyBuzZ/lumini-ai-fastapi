@@ -2,9 +2,11 @@ from fastapi import Request, HTTPException
 from jose import jwt
 from urllib.parse import unquote
 from app._core.config import settings
+from app._core.logger import logger
 
 def get_user_id_from_cookie(request: Request):
     token = request.cookies.get("accessToken")
+    logger.info("TOKEN: " + str(token))
     if not token:
         raise HTTPException(status_code=401, detail="Unauthorized")
 

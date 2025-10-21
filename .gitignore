@@ -85,3 +85,8 @@ htmlcov/
 .ruff_cache/
 
 summary.json
+
+# Qdrant local storage
+qdrant_data/
+
+example.txt

@@ -10,6 +10,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 class CreateAllRequest(BaseModel):
     repo_url: str
 
+class AskRequest(BaseModel):
+    query: str
+
 class LabFileRouter:
     def __init__(self):
         self.router = APIRouter(prefix="/api/lab-files", tags=["lab_files"])
@@ -24,7 +27,6 @@ class LabFileRouter:
             user_id: str = Depends(get_user_id_from_cookie),
             db: AsyncSession = Depends(get_db)
         ):
-            logger.info(f"Creating all lab files for lab_id: {lab_id}")
             await self.controller.create_all(request.repo_url, user_id, lab_id, db)
             return DataResponse(status=200, message="Lab files created successfully")
         
@@ -33,6 +35,13 @@ class LabFileRouter:
             lab_id: str,
             db: AsyncSession = Depends(get_db)
         ):
-            logger.info(f"Fetching all lab files for lab_id: {lab_id}")
             lab_files = await self.controller.get_all(lab_id, db)
             return DataResponse(status=200, message="Lab files fetched successfully", payload=lab_files)
+        
+        @self.router.post("/ask/{lab_id}")
+        async def ask_endpoint(
+            lab_id: str,
+            request: AskRequest,
+            db: AsyncSession = Depends(get_db)
+        ):
+            return await self.controller.ask(lab_id, request.query, db)

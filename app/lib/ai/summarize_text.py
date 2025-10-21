@@ -2,8 +2,8 @@ import httpx
 from typing import Optional
 from app._core.config import settings
 
-CODELLAMA_URL = settings.OLLAMA_URL
-MODEL_NAME = "codellama:7b"
+AI_URL = "http://localhost:11434/api/generate"
+MODEL_NAME = "llama3.1:latest"
 
 SUMMARY_ROLE = (
     "You are a helpful assistant that summarizes code snippets. "
@@ -20,7 +20,7 @@ async def summarize_text(text: str, client: Optional[httpx.AsyncClient] = None) 
 
     should_close = False
     if client is None:
-        client = httpx.AsyncClient(timeout=90.0)
+        client = httpx.AsyncClient(timeout=300.0)
         should_close = True
 
     try:
@@ -30,7 +30,7 @@ async def summarize_text(text: str, client: Optional[httpx.AsyncClient] = None) 
             "stream": False,
         }
 
-        response = await client.post(CODELLAMA_URL, json=payload, headers={"Content-Type": "application/json"})
+        response = await client.post(AI_URL, json=payload, headers={"Content-Type": "application/json"})
         response.raise_for_status()
 
         data = response.json()
@@ -44,7 +44,7 @@ async def summarize_text(text: str, client: Optional[httpx.AsyncClient] = None) 
         return summary
 
     except httpx.TimeoutException:
-        print("Request to CodeLlama timed out.")
+        print("Request to timed out.")
         return "Error: Timeout while summarizing text."
 
     except httpx.RequestError as e:
